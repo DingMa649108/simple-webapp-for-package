@@ -11,7 +11,7 @@
       <repositories>
         <repository>
           <id>github</id>
-          <url>https://maven.pkg.github.com/DingMa649108</url>
+          <url>https://maven.pkg.github.com/DingMa649108/example-package</url>
           <releases><enabled>true</enabled></releases>
           <snapshots><enabled>true</enabled></snapshots>
         </repository>
