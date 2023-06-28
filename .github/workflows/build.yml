@@ -11,6 +11,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Build with Maven
+      run: mvn -s settings.xml clean install
+      env:
+        GITHUB_TOKEN: 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
+
 
     - name: Build with Maven
       run: mvn clean package -s settings.xml
