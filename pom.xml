@@ -19,6 +19,14 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	  <servers>
+    <server>
+      <id>github</id>
+      <username>DingMa649108</username>
+      <password>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</password>
+    </server>
+  </servers>
+
 	    <repositories>
         <repository>
                  <id>github</id>
