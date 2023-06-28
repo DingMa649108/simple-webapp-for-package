@@ -24,7 +24,7 @@
 	    <repositories>
         <repository>
                  <id>github</id>
-          <url>https://maven.pkg.github.com/DingMa649108/example-package</url>
+          <url>https://maven.pkg.github.com/DingMa649108</url>
         </repository>
     </repositories>
 
