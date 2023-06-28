@@ -15,7 +15,7 @@ jobs:
     - name: Build with Maven
       run: mvn -s settings.xml clean install
       env:
-        GITHUB_TOKEN: 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
+        GITHUB_TOKEN: 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
 
 
     - name: Build with Maven
