@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>evClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">consuming-web-service-complete</a> &gt; <a href="index.source.html" class="el_package">com.example.consumingwebservice</a> &gt; <span class="el_source">evClient.java</span></div><h1>evClient.java</h1><pre class="source lang-java linenums">package com.example.consumingwebservice;
+
+import org.springframework.stereotype.Component;
+import org.springframework.ws.WebServiceMessage;
+import org.springframework.ws.client.core.WebServiceMessageCallback;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.soap.SoapMessage;
+import org.springframework.ws.transport.context.TransportContext;
+import org.springframework.ws.transport.context.TransportContextHolder;
+import org.springframework.ws.transport.http.HttpUrlConnection;
+import org.apache.http.impl.client.HttpClients;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
+
+
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+import java.net.HttpURLConnection;
+import java.util.Map;
+
+import javax.xml.transform.TransformerException;
+import javax.xml.namespace.QName;
+
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.springframework.ws.transport.http.HttpComponentsMessageSender;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpRequest;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.HttpException;
+
+import com.example.consumingwebservice.wsdl.Add;
+import com.example.consumingwebservice.wsdl.AddResponse;
+
+@Component
+<span class="fc" id="L35">public class evClient extends WebServiceGatewaySupport {</span>
+
+    public AddResponse getResult(int a, int b) {
+<span class="fc" id="L38">        final QName soapHeaderName = new QName(&quot;SOAPAction&quot;, &quot;&quot;);</span>
+<span class="fc" id="L39">		Add request = new Add();</span>
+<span class="fc" id="L40">		request.setIntA(a);</span>
+<span class="fc" id="L41">		request.setIntB(b);</span>
+
+<span class="fc" id="L43">	    final WebServiceMessageCallback actionCallback = new SoapActionCallback(&quot;http://tempuri.org/Add&quot;);</span>
+<span class="fc" id="L44">	    final WebServiceMessageCallback customCallback = new WebServiceMessageCallback() {</span>
+	        public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
+<span class="fc" id="L46">	            actionCallback.doWithMessage(message);</span>
+<span class="fc" id="L47">	        }</span>
+	    };	
+<span class="fc" id="L49">        return (AddResponse) getWebServiceTemplate().marshalSendAndReceive(&quot;http://www.dneonline.com/calculator.asmx&quot;, request, customCallback);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
