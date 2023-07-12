@@ -7,7 +7,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 @Configuration
 @ComponentScan(basePackages = "com.example.consumingwebservice")
-public class EVConfig {
+public class TestConfig {
 
   @Bean
   public Jaxb2Marshaller marshaller() {

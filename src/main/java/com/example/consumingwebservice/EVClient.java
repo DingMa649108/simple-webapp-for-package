@@ -1,5 +1,6 @@
 package com.example.consumingwebservice;
 
+import org.springframework.stereotype.Component;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.client.core.WebServiceMessageCallback;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
@@ -30,7 +31,8 @@ import org.apache.http.HttpException;
 import com.example.consumingwebservice.wsdl.Add;
 import com.example.consumingwebservice.wsdl.AddResponse;
 
-public class EVClient extends WebServiceGatewaySupport {
+@Component
+public class evClient extends WebServiceGatewaySupport {
 
     public AddResponse getResult(int a, int b) {
         final QName soapHeaderName = new QName("SOAPAction", "");
@@ -42,10 +44,6 @@ public class EVClient extends WebServiceGatewaySupport {
 	    final WebServiceMessageCallback customCallback = new WebServiceMessageCallback() {
 	        public void doWithMessage(WebServiceMessage message) throws IOException, TransformerException {
 	            actionCallback.doWithMessage(message);
-	            // SoapMessage soap = (SoapMessage) message;
-
-            
-				
 	        }
 	    };	
         return (AddResponse) getWebServiceTemplate().marshalSendAndReceive("http://www.dneonline.com/calculator.asmx", request, customCallback);

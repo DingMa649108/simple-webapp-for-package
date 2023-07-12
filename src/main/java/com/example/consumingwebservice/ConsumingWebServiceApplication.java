@@ -19,7 +19,7 @@ public class ConsumingWebServiceApplication {
   }
 
   @Bean
-  CommandLineRunner lookup(EVClient quoteClient) {
+  CommandLineRunner lookup(evClient quoteClient) {
     return args -> {
 
 		AddResponse response = quoteClient.getResult(3, 7);
