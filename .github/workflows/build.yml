@@ -1,7 +1,7 @@
 name: Java CI with Maven
 
 on:
-  push:
+  pull_request:
     branches: master
 
 jobs:
@@ -34,8 +34,8 @@ jobs:
         min-coverage-overall: 40
         min-coverage-changed-files: 60
     
-    - name: Code Coverage Reporter Action
-      uses: acid-chicken/code-coverage-reporter-action@v0.4.1
+#     - name: Code Coverage Reporter Action
+#       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
 
 
     - name: Archive production artifacts
