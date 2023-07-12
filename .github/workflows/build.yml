@@ -13,14 +13,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Build with Maven
-      run: mvn -s settings.xml clean install
-      env:
-        GITHUB_TOKEN: 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
+#     - name: Build with Maven
+#       run: mvn -s settings.xml clean install
+#       env:
+#         GITHUB_TOKEN: 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
 
 
     - name: Build with Maven
-      run: mvn clean package -s settings.xml
+      run: mvn clean package
+    
+    - name: Code Coverage Reporter Action
+      uses: acid-chicken/code-coverage-reporter-action@v0.4.1
+
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
