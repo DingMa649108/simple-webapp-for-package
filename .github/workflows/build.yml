@@ -21,6 +21,18 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package
+      
+    - name: Run Coverage
+      run: mvn clean test
+
+    - name: Add coverage to PR
+      id: jacoco
+      uses: madrapps/jacoco-report@v1.3
+      with:
+        paths: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
+        token: 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
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
     
     - name: Code Coverage Reporter Action
       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
