@@ -1,0 +1,29 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Build with Maven
+      run: mvn -s settings.xml clean install
+      env:
+        GITHUB_TOKEN: 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
+
+
+    - name: Build with Maven
+      run: mvn clean package -s settings.xml
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: packaged-war
+        path: target/*.war

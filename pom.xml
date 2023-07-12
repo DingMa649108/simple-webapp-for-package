@@ -19,12 +19,12 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-	<!-- <repositories>
-        <repository>
-        	<id>github</id>
-          	<url>https://maven.pkg.github.com/DingMa649108/example-package</url>
-        </repository>
-    </repositories> -->
+	<repositories>
+	    <repository>
+	        <id>github</id>
+	        <url>https://maven.pkg.github.com/DingMa649108/example-package</url>
+	    </repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
