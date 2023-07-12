@@ -19,12 +19,12 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-	    <repositories>
+	<!-- <repositories>
         <repository>
-                 <id>github</id>
-          <url>https://maven.pkg.github.com/DingMa649108/example-package</url>
+        	<id>github</id>
+          	<url>https://maven.pkg.github.com/DingMa649108/example-package</url>
         </repository>
-    </repositories>
+    </repositories> -->
 
 	<dependencies>
 		<dependency>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>com.example.consumingwebservice.wsdl</groupId>
 			<artifactId>example-package</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -90,7 +90,7 @@
 </plugins> -->
 	
 
-	<!-- <build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -118,6 +118,6 @@
 					</configuration>
 			</plugin>
 		</plugins>
-	</build> -->
+	</build>
 
 </project>
