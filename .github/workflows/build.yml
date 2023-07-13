@@ -39,13 +39,18 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 40
         min-coverage-changed-files: 60
+        
+    - name: Get the Coverage info
+      run: |
+        echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+        echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
     
 #     - name: Code Coverage Reporter Action
 #       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
 
 
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: packaged-war
-        path: target/*.war
+#     - name: Archive production artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: packaged-war
+#         path: target/*.war
