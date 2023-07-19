@@ -48,8 +48,8 @@ jobs:
 
     - name: Extract and print coverage
       run: |
-        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ${{ github.workspace }}/target/jacoco-report/jacoco.xml)
-        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ${{ github.workspace }}/target/jacoco-report/jacoco.xml)
+        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ./target/jacoco-report/jacoco.xml)
+        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ./target/jacoco-report/jacoco.xml)
         TOTAL=$((COVERED + MISSED))
         COVERAGE=$(awk "BEGIN {printf \"%.2f\", (${COVERED}/${TOTAL})*100}")
         echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
