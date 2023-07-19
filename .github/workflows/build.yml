@@ -56,7 +56,7 @@ jobs:
       run: |
         python -c "
         import lxml.etree as ET
-        tree = ET.parse('./artifacts/report.xml')
+        tree = ET.parse('./target/jacoco-report/jacoco.xml')
         root = tree.getroot()
         covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//counter[@type=\"LINE\"]'))
         missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//counter[@type=\"LINE\"]'))
