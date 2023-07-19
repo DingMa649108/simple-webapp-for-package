@@ -31,16 +31,28 @@ jobs:
         name: report.xml
         path: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
 
-    - name: Add coverage to PR
-      id: jacoco
-      uses: madrapps/jacoco-report@v1.3
-      with:
-        paths: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
+#     - name: Add coverage to PR
+#       id: jacoco
+#       uses: madrapps/jacoco-report@v1.3
+#       with:
+#         paths: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
         
-    - name: Get the Coverage info
+#     - name: Get the Coverage info
+#       run: |
+#         echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
+#         echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+
+
+    - name: Install xmlstarlet
+      run: sudo apt-get install -y xmlstarlet
+
+    - name: Extract and print coverage
       run: |
-        echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-        echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ${{ github.workspace }}/target/jacoco-report/jacoco.xml)
+        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ${{ github.workspace }}/target/jacoco-report/jacoco.xml)
+        TOTAL=$((COVERED + MISSED))
+        COVERAGE=$(awk "BEGIN {printf \"%.2f\", (${COVERED}/${TOTAL})*100}")
+        echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
     
 #     - name: Code Coverage Reporter Action
 #       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
