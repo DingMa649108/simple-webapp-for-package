@@ -58,11 +58,12 @@ jobs:
         import lxml.etree as ET
         tree = ET.parse('./target/jacoco-report/jacoco.xml')
         root = tree.getroot()
-        covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//counter[@type=\"LINE\"]'))
-        missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//counter[@type=\"LINE\"]'))
+        path_to_client = 'src/main/java/com/example/consumingwebservice/evClient.java'
+        covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
+        missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
         total = covered + missed
         coverage = covered / total * 100
-        print(f'Lines covered: {covered}/{total} ({coverage:.2f}%)')
+        print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
         "
     
 #     - name: Code Coverage Reporter Action
