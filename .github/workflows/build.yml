@@ -58,7 +58,7 @@ jobs:
         import lxml.etree as ET
         tree = ET.parse('./target/jacoco-report/jacoco.xml')
         root = tree.getroot()
-        path_to_client = 'com/example/consumingwebservice/EVConfig'
+        path_to_client = 'com/example/consumingwebservice/evConfig'
         covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
         missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
         total = covered + missed
