@@ -43,13 +43,13 @@ jobs:
 #         echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
 
-    - name: Install xmlstarlet
-      run: sudo apt-get install -y xmlstarlet
+    - name: Install xmllint
+      run: sudo apt-get install -y libxml2-utils
 
     - name: Extract and print coverage
       run: |
-        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ./target/jacoco-report/jacoco.xml)
-        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ./target/jacoco-report/jacoco.xml)
+        COVERED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@covered)' ./target/jacoco-report/jacoco.xml)
+        MISSED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@missed)' ./target/jacoco-report/jacoco.xml)
         TOTAL=$((COVERED + MISSED))
         COVERAGE=$(echo "scale=2; ($COVERED/$TOTAL)*100" | bc)
         echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
