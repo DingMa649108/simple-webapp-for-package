@@ -43,18 +43,26 @@ jobs:
 #         echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
 
-    - name: Install xmllint
-      run: sudo apt-get install -y libxml2-utils
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+        
+    - name: Install dependencies
+      run: python -m pip install --upgrade pip lxml
 
     - name: Extract and print coverage
       run: |
-        COVERED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@covered)' ./target/jacoco-report/jacoco.xml)
-        MISSED=$(xmllint --xpath 'string(//counter[@type="LINE"]/@missed)' ./target/jacoco-report/jacoco.xml)
-        TOTAL=$((COVERED + MISSED))
-        COVERAGE=$(echo "scale=2; ($COVERED/$TOTAL)*100" | bc)
-        echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
-        echo "covered: ${COVERED}"
-        echo "missed: ${MISSED}"
+        python -c "
+import lxml.etree as ET
+tree = ET.parse('./target/jacoco-report/jacoco.xml')
+root = tree.getroot()
+covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//counter[@type="LINE"]'))
+missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//counter[@type="LINE"]'))
+total = covered + missed
+coverage = covered / total * 100
+print(f'Lines covered: {covered}/{total} ({coverage:.2f}%)')
     
 #     - name: Code Coverage Reporter Action
 #       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
