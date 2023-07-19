@@ -53,6 +53,8 @@ jobs:
         TOTAL=$((COVERED + MISSED))
         COVERAGE=$(echo "scale=2; ($COVERED/$TOTAL)*100" | bc)
         echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
+        echo "covered: ${COVERED}"
+        echo "missed: ${MISSED}"
     
 #     - name: Code Coverage Reporter Action
 #       uses: acid-chicken/code-coverage-reporter-action@v0.4.1
