@@ -48,8 +48,8 @@ jobs:
 
     - name: Extract and print coverage
       run: |
-        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ./artifacts/report.xml)
-        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ./artifacts/report.xml)
+        COVERED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@covered" ./target/jacoco-report/jacoco.xml)
+        MISSED=$(xmlstarlet sel -t -v "//counter[@type='LINE']/@missed" ./target/jacoco-report/jacoco.xml)
         TOTAL=$((COVERED + MISSED))
         COVERAGE=$(echo "scale=2; ($COVERED/$TOTAL)*100" | bc)
         echo "Lines covered: ${COVERED}/${TOTAL} (${COVERAGE}%)"
