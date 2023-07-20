@@ -27,23 +27,61 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/site/clover/clover.xml
+        path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
         
     - name: Upload HTML Report
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/site/clover/index.html
-
-
-
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+        path: ${{ github.workspace }}/target/site/jacoco/jacoco.html
         
-    - name: Install dependencies
-      run: python -m pip install --upgrade pip lxml
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: |
+        npm install jsdom xpath
+
+    - name: Calculate Coverage
+      id: calculate_coverage
+      run: |
+        echo "::set-output name=coverage::$(node -e '
+          const fs = require("fs");
+          const jsdom = require("jsdom");
+          const { JSDOM } = jsdom;
+          const { select } = require("xpath");
+
+          const xml = fs.readFileSync("./target/site/jacoco/jacoco.xml", "utf-8");
+          const dom = new JSDOM(xml, { contentType: "text/xml" });
+          const doc = dom.window.document;
+
+          let covered = 0;
+          let missed = 0;
+
+          const lineNodes = select("//sourcefile[@name=\"evClient.java\"]/counter[@type='LINE']", doc);
+
+          lineNodes.forEach(node => {
+            covered += parseInt(node.getAttribute("covered"));
+            missed += parseInt(node.getAttribute("missed"));
+          });
+
+          const coverage = (covered / (covered + missed)) * 100;
+
+          console.log("Coverage: " + coverage.toFixed(2) + "%");
+
+          coverage.toFixed(2);
+        ')"
+
+
+#     - name: Setup Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.x'
+        
+#     - name: Install dependencies
+#       run: python -m pip install --upgrade pip lxml
 
 #     - name: Extract and print coverage
 #       run: |
@@ -59,21 +97,21 @@ jobs:
 #         print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
 #         "
 
-    - name: Extract and print coverage for Client
-      id: get_coverage
-      run: |
-        python -c "
-        import lxml.etree as ET
-        tree = ET.parse('./target/site/clover/clover.xml')
-        root = tree.getroot()
-        path_to_client = 'evClient.java'
-        file_element = root.find('.//file[@name=\"'+ path_to_client +'\"]')
-        if file_element is not None:
-            metrics = file_element.find('metrics')
-            statements = int(metrics.get('statements'))
-            covered_statements = int(metrics.get('coveredstatements'))
-            coverage = covered_statements / statements * 100
-        else:
-            coverage = 0
-        print(f'Lines covered for Client.java: {covered_statements}/{statements} ({coverage:.2f}%)')
-        "
+#     - name: Extract and print coverage for Client
+#       id: get_coverage
+#       run: |
+#         python -c "
+#         import lxml.etree as ET
+#         tree = ET.parse('./target/site/clover/clover.xml')
+#         root = tree.getroot()
+#         path_to_client = 'evClient.java'
+#         file_element = root.find('.//file[@name=\"'+ path_to_client +'\"]')
+#         if file_element is not None:
+#             metrics = file_element.find('metrics')
+#             statements = int(metrics.get('statements'))
+#             covered_statements = int(metrics.get('coveredstatements'))
+#             coverage = covered_statements / statements * 100
+#         else:
+#             coverage = 0
+#         print(f'Lines covered for Client.java: {covered_statements}/{statements} ({coverage:.2f}%)')
+#         "
