@@ -21,7 +21,7 @@ jobs:
       
     - name: Run Coverage
       run: |
-        mvn clean test
+        mvn test
         mvn clover:clover
       
     - name: Upload Report
