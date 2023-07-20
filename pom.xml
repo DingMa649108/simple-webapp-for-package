@@ -143,7 +143,7 @@
 		   <plugin>
 			<groupId>org.openclover</groupId>
 			<artifactId>clover-maven-plugin</artifactId>
-			<version>4.5.1</version>
+			<version>4.4.1</version>
 		   </plugin>
 		</plugins>
 	</build>
