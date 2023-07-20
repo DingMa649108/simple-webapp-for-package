@@ -57,7 +57,7 @@ jobs:
     - name: Extract and print coverage for Client
       id: get_coverage
       run: |
-        COVERAGE=$(python -c "
+        python -c "
         import lxml.etree as ET
         tree = ET.parse('./target/site/clover/clover.xml')
         root = tree.getroot()
@@ -70,6 +70,5 @@ jobs:
             coverage = covered_statements / statements * 100
         else:
             coverage = 0
-        print(f'{coverage}')
-        ")
-        echo "::set-output name=coverage::$COVERAGE"
+        print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
+        "
