@@ -70,5 +70,5 @@ jobs:
             coverage = covered_statements / statements * 100
         else:
             coverage = 0
-        print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
+        print(f'Lines covered for Client.java: {covered_statements}/{statements} ({coverage:.2f}%)')
         "
