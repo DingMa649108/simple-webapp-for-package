@@ -28,6 +28,12 @@ jobs:
       with:
         name: report.xml
         path: ${{ github.workspace }}/target/site/clover/clover.xml
+        
+    - name: Upload HTML Report
+      uses: 'actions/upload-artifact@v2'
+      with:
+        name: report.xml
+        path: ${{ github.workspace }}/target/site/clover/index.html
 
 
 
