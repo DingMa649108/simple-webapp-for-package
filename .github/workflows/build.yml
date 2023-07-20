@@ -17,10 +17,12 @@ jobs:
     - name: Build with Maven
       run: |
         mvn clean package
-        mvn clover:clover
+        mvn clover:setup
       
     - name: Run Coverage
-      run: mvn clean test
+      run: |
+        mvn clean test
+        mvn clover:clover
       
     - name: Upload Report
       uses: 'actions/upload-artifact@v2'
