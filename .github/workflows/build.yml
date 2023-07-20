@@ -12,15 +12,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-#     - name: Build with Maven
-#       run: mvn -s settings.xml clean install
-#       env:
-#         GITHUB_TOKEN: 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
 
 
     - name: Build with Maven
-      run: mvn clean package
+      run: |
+        mvn clean package
+        mvn cobertura:cobertura
       
     - name: Run Coverage
       run: mvn clean test
@@ -29,18 +26,7 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
-
-#     - name: Add coverage to PR
-#       id: jacoco
-#       uses: madrapps/jacoco-report@v1.3
-#       with:
-#         paths: ${{ github.workspace }}/target/jacoco-report/jacoco.xml
-        
-#     - name: Get the Coverage info
-#       run: |
-#         echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-#         echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+        path: ${{ github.workspace }}/target/site/cobertura/cobertura.xml
 
 
 
@@ -56,7 +42,7 @@ jobs:
       run: |
         python -c "
         import lxml.etree as ET
-        tree = ET.parse('./target/jacoco-report/jacoco.xml')
+        tree = ET.parse('./target/site/cobertura/cobertura.xml')
         root = tree.getroot()
         path_to_client = 'evClient.java'
         covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
