@@ -17,7 +17,7 @@ jobs:
     - name: Build with Maven
       run: |
         mvn clean package
-        mvn cobertura:cobertura
+        mvn clover:cloverxml
       
     - name: Run Coverage
       run: mvn clean test
@@ -26,7 +26,7 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/site/cobertura/cobertura.xml
+        path: ${{ github.workspace }}/target/site/clover/clover.xml
 
 
 
@@ -42,7 +42,7 @@ jobs:
       run: |
         python -c "
         import lxml.etree as ET
-        tree = ET.parse('./target/site/cobertura/cobertura.xml')
+        tree = ET.parse('./target/site/clover/clover.xml')
         root = tree.getroot()
         path_to_client = 'evClient.java'
         covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
