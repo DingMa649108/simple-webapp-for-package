@@ -67,7 +67,7 @@ jobs:
             parser.parseString(data, function (err, result) {
                 var report = result.report;
                 var package = report.package.find((pkg) => pkg.$.name === 'com/example/consumingwebservice');
-                var classReport = package.class.find((cls) => cls.$.name === 'evClient$1');
+                var classReport = package.class.find((cls) => cls.$.name === 'evClient.java');
                 var lineCounter = classReport.counter.find((counter) => counter.$.type === 'LINE');
                 var covered = parseInt(lineCounter.$.covered);
                 var missed = parseInt(lineCounter.$.missed);
