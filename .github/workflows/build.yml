@@ -56,7 +56,7 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install jsdom xpath
-
+        
     - name: Calculate Coverage
       run: |
         node -e "
@@ -67,9 +67,12 @@ jobs:
             parser.parseString(data, function (err, result) {
                 var report = result.report;
                 var package = report.package.find((pkg) => pkg.$.name === 'com/example/consumingwebservice');
-                var file = package.sourcefile.find((file) => file.$.name === 'evClient.java');
-                var lineRate = file.counter.find((counter) => counter.$.type === 'LINE').$.covered;
-                console.log(lineRate);
+                var classReport = package.class.find((cls) => cls.$.name === 'evClient$1');
+                var lineCounter = classReport.counter.find((counter) => counter.$.type === 'LINE');
+                var covered = parseInt(lineCounter.$.covered);
+                var missed = parseInt(lineCounter.$.missed);
+                var coverage = covered / (covered + missed) * 100;
+                console.log('Coverage: ' + coverage + '%');
             });
         });
         "
