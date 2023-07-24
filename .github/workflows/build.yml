@@ -69,7 +69,7 @@ jobs:
           const doc = dom.window.document;
           let covered = 0;
           let missed = 0;
-          const classNodes = select(\"//class[@name='com/example/consumingwebservice/evClient\$1']/counter[@type='LINE']\", doc);
+          const sourceFileNodes = select(\"//sourcefile[@name='evClient.java']/counter[@type='LINE']\", doc);
           classNodes.forEach(node => {
             covered += parseInt(node.getAttribute('covered'));
             missed += parseInt(node.getAttribute('missed'));
