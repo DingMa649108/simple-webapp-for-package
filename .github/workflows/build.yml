@@ -56,7 +56,7 @@ jobs:
     - name: Calculate Coverage
       id: calculate_coverage
       run: |
-        COVERED=$(node -e "
+        node -e "
         var fs = require('fs');
         var xml2js = require('xml2js');
         var parser = new xml2js.Parser();
@@ -69,8 +69,7 @@ jobs:
                 console.log(lineRate);
             });
         });
-        ")
-        echo "::set-output name=coverage::$COVERED"
+        "
 
 
 #     - name: Setup Python
