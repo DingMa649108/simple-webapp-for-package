@@ -75,7 +75,7 @@ jobs:
             missed += parseInt(node.getAttribute('missed'));
           });
           const coverage = (covered / (covered + missed)) * 100;
-          console.log('Coverage: ' + coverage.toFixed(2) + '%');
+          console.log('Coverage: ' + covered + "/" + (covered + missed) + coverage.toFixed(2) + '%');
         "
 
 
