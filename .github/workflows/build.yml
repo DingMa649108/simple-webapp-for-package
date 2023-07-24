@@ -58,13 +58,12 @@ jobs:
         npm install jsdom xpath
 
     - name: Calculate Coverage
-      id: calculate_coverage
       run: |
         node -e "
         var fs = require('fs');
         var xml2js = require('xml2js');
         var parser = new xml2js.Parser();
-        fs.readFile('./target/site/jacoco.xml', function(err, data) {
+        fs.readFile('./target/site/jacoco/jacoco.xml', function(err, data) {
             parser.parseString(data, function (err, result) {
                 var report = result.report;
                 var package = report.package.find((pkg) => pkg.$.name === 'com/mycompany/project');
