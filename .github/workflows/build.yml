@@ -78,7 +78,7 @@ jobs:
           const coverage = (covered / (covered + missed)) * 100;
           console.log(coverage.toFixed(2));
         ")
-        echo "::set-output name=coverage::$COVERAGE"
+        echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
 
 
 #     - name: Setup Python
