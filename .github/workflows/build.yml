@@ -58,9 +58,8 @@ jobs:
         npm install jsdom xpath
         
     - name: Calculate Coverage
-      id: calculate_coverage
       run: |
-        COVERAGE=$(node -e "
+        node -e "
           const fs = require('fs');
           const jsdom = require('jsdom');
           const { JSDOM } = jsdom;
@@ -76,9 +75,8 @@ jobs:
             missed += parseInt(node.getAttribute('missed'));
           });
           const coverage = (covered / (covered + missed)) * 100;
-          console.log(coverage.toFixed(2));
-        ")
-        echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
+          console.log('Coverage: ' + coverage.toFixed(2) + '%');
+        "
 
 
 #     - name: Setup Python
