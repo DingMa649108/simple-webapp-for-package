@@ -58,24 +58,28 @@ jobs:
         npm install jsdom xpath
         
     - name: Calculate Coverage
+      id: calculate_coverage
       run: |
-        node -e "
-        var fs = require('fs');
-        var xml2js = require('xml2js');
-        var parser = new xml2js.Parser();
-        fs.readFile('./target/site/jacoco/jacoco.xml', function(err, data) {
-            parser.parseString(data, function (err, result) {
-                var report = result.report;
-                var package = report.package.find((pkg) => pkg.$.name === 'com/example/consumingwebservice');
-                var classReport = package.class.find((cls) => cls.$.name === 'evClient.java');
-                var lineCounter = classReport.counter.find((counter) => counter.$.type === 'LINE');
-                var covered = parseInt(lineCounter.$.covered);
-                var missed = parseInt(lineCounter.$.missed);
-                var coverage = covered / (covered + missed) * 100;
-                console.log('Coverage: ' + coverage + '%');
-            });
-        });
-        "
+        echo "::set-output name=coverage::$(node -e '
+          const fs = require("fs");
+          const jsdom = require("jsdom");
+          const { JSDOM } = jsdom;
+          const { select } = require("xpath");
+          const xml = fs.readFileSync("./target/site/jacoco/jacoco.xml", "utf-8");
+          const dom = new JSDOM(xml, { contentType: "text/xml" });
+          const doc = dom.window.document;
+          let covered = 0;
+          let missed = 0;
+          const classNodes = select("//class[@name=\"com/example/consumingwebservice/evClient$1\"]/counter[@type=\'LINE\']", doc);
+          classNodes.forEach(node => {
+            covered += parseInt(node.getAttribute("covered"));
+            missed += parseInt(node.getAttribute("missed"));
+          });
+          const coverage = (covered / (covered + missed)) * 100;
+          console.log("Coverage: " + coverage.toFixed(2) + "%");
+          coverage.toFixed(2);
+        ')"
+
 
 
 #     - name: Setup Python
