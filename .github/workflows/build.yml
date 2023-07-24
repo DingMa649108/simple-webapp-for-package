@@ -60,7 +60,7 @@ jobs:
     - name: Calculate Coverage
       id: calculate_coverage
       run: |
-        echo "::set-output name=coverage::$(node -e '
+        echo "::set-output name=coverage::$(node -e \`
           const fs = require("fs");
           const jsdom = require("jsdom");
           const { JSDOM } = jsdom;
@@ -70,7 +70,7 @@ jobs:
           const doc = dom.window.document;
           let covered = 0;
           let missed = 0;
-          const classNodes = select("//class[@name=\"com/example/consumingwebservice/evClient$1\"]/counter[@type=\'LINE\']", doc);
+          const classNodes = select("//class[@name=\"com/example/consumingwebservice/evClient$1\"]/counter[@type='LINE']", doc);
           classNodes.forEach(node => {
             covered += parseInt(node.getAttribute("covered"));
             missed += parseInt(node.getAttribute("missed"));
@@ -78,8 +78,7 @@ jobs:
           const coverage = (covered / (covered + missed)) * 100;
           console.log("Coverage: " + coverage.toFixed(2) + "%");
           coverage.toFixed(2);
-        ')"
-
+        \`)"
 
 
 #     - name: Setup Python
