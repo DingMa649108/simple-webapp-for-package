@@ -56,33 +56,21 @@ jobs:
     - name: Calculate Coverage
       id: calculate_coverage
       run: |
-        echo "::set-output name=coverage::$(node -e '
-          console.log("");
-          const fs = require("fs");
-          const jsdom = require("jsdom");
-          const { JSDOM } = jsdom;
-          const { select } = require("xpath");
-
-          const xml = fs.readFileSync("./target/site/jacoco/jacoco.xml", "utf-8");
-          const dom = new JSDOM(xml, { contentType: "text/xml" });
-          const doc = dom.window.document;
-
-          let covered = 0;
-          let missed = 0;
-
-          const lineNodes = select("//sourcefile[@name=\"evClient\"]/counter[@type='LINE']", doc);
-
-          lineNodes.forEach(node => {
-            covered += parseInt(node.getAttribute("covered"));
-            missed += parseInt(node.getAttribute("missed"));
-          });
-
-          const coverage = (covered / (covered + missed)) * 100;
-
-          console.log("Coverage: " + coverage.toFixed(2) + "%");
-
-          coverage.toFixed(2);
-        ')"
+        COVERED=$(node -e "
+        var fs = require('fs');
+        var xml2js = require('xml2js');
+        var parser = new xml2js.Parser();
+        fs.readFile('./target/site/jacoco.xml', function(err, data) {
+            parser.parseString(data, function (err, result) {
+                var report = result.report;
+                var package = report.package.find((pkg) => pkg.$.name === 'com/mycompany/project');
+                var file = package.sourcefile.find((file) => file.$.name === 'evClient.java');
+                var lineRate = file.counter.find((counter) => counter.$.type === 'LINE').$.covered;
+                console.log(lineRate);
+            });
+        });
+        ")
+        echo "::set-output name=coverage::$COVERED"
 
 
 #     - name: Setup Python
