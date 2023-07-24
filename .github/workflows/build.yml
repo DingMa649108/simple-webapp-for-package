@@ -77,7 +77,7 @@ jobs:
           });
           const coverage = (covered / (covered + missed)) * 100;
           console.log('Coverage: ' + coverage.toFixed(2) + '%');
-          process.exit(coverage.toFixed(2));
+          return coverage.toFixed(2);
         ")
         echo "::set-output name=coverage::$COVERAGE"
 
