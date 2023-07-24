@@ -69,7 +69,7 @@ jobs:
           let covered = 0;
           let missed = 0;
 
-          const lineNodes = select("//sourcefile[@name=\"evClient.java\"]/counter[@type='LINE']", doc);
+          const lineNodes = select("//sourcefile[@name=\"evClient\"]/counter[@type='LINE']", doc);
 
           lineNodes.forEach(node => {
             covered += parseInt(node.getAttribute("covered"));
