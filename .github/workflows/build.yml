@@ -81,7 +81,7 @@ jobs:
     - name: Calculate Coverage
       id: calculate-coverage
       run: |
-        COVERAGE=$(node -e "
+        node -e "
           const fs = require('fs');
           const jsdom = require('jsdom');
           const { JSDOM } = jsdom;
@@ -97,9 +97,14 @@ jobs:
             missed += parseInt(node.getAttribute('missed'));
           });
           const coverage = (covered / (covered + missed)) * 100;
-          coverage.toFixed(2);
-        ")
-        echo "COVERAGE=$COVERAGE" >> $GITHUB_ENV
+          console.log(coverage.toFixed(2));
+        "
+
+    - name: Assign Coverage to Variable
+      run: echo "COVERAGE=$(tail -n 1 coverage.log)" >> $GITHUB_ENV
+
+    - name: Print coverage
+      run: echo $COVERAGE
 
 
 #     - name: Setup Python
