@@ -106,6 +106,13 @@ jobs:
     - name: Print coverage
       run: echo $COVERAGE
 
+    - name: Check coverage
+      run: |
+        if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+          echo "Code coverage is less than 80%"
+          exit 1
+        fi
+
 
 #     - name: Setup Python
 #       uses: actions/setup-python@v2
