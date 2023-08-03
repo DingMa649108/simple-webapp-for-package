@@ -98,7 +98,7 @@ jobs:
           });
           const coverage = (covered / (covered + missed)) * 100;
           console.log("Coverage: " + coverage.toFixed(2) + "%");
-          return coverage.toFixed(2);
+          coverage.toFixed(2);
         ')" >> $GITHUB_ENV
 
 
