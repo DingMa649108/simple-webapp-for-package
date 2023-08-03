@@ -134,3 +134,10 @@ jobs:
         echo "coverage=$coverage" 
         echo "Lines covered for Client.java: $covered_statements/$statements ($coverage%)"
         echo "::set-output name=coverage::$coverage"
+
+    - name: Check coverage
+      run: |
+        if (( $(echo "${{ steps.get_coverage.outputs.coverage }} == 100.0" | bc -l) )); then
+          echo "Error: Coverage is less than 80%";
+          exit 1;
+        fi
