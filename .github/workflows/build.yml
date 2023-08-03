@@ -97,14 +97,11 @@ jobs:
             missed += parseInt(node.getAttribute('missed'));
           });
           const coverage = (covered / (covered + missed)) * 100;
-          console.log(coverage.toFixed(2));
+          fs.writeFileSync('coverage.txt', coverage.toFixed(2));
         "
 
     - name: Assign Coverage to Variable
-      run: echo "COVERAGE=$(tail -n 1 coverage.log)" >> $GITHUB_ENV
-
-    - name: Print coverage
-      run: echo $COVERAGE
+      run: echo "COVERAGE=$(cat coverage.txt)" >> $GITHUB_ENV
 
 
 #     - name: Setup Python
