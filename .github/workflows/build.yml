@@ -36,13 +36,13 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+        path: ${{ github.workspace }}/target/site/clover/clover.xml
         
     - name: Upload HTML Report
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
-        path: ${{ github.workspace }}/target/site/jacoco/jacoco.html
+        path: ${{ github.workspace }}/target/site/clover/clover.html
         
     - name: Setup Node.js
       uses: actions/setup-node@v2
