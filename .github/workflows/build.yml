@@ -14,20 +14,19 @@ jobs:
     - uses: actions/checkout@v2
 
 
-#     - name: Build with Maven
-#       run: |
-#         mvn clean package
-#         mvn clover:setup test
-        
     - name: Build with Maven
       run: |
         mvn clean package
-        mvn jacoco:report
+        mvn clover:setup test
+        
+    # - name: Build with Maven
+    #   run: |
+    #     mvn clean package
+    #     mvn jacoco:report
       
-#     - name: Run Coverage
-#       run: |
-#         mvn clover:clover
-
+    - name: Run Coverage
+      run: |
+        mvn clover:clover
 
     - name: Run Coverage
       run: |
@@ -57,27 +56,6 @@ jobs:
     - name: Install Dependencies
       run: |
         npm install jsdom xpath
-        
-    # - name: Calculate Coverage
-    #   run: |
-    #     node -e "
-    #       const fs = require('fs');
-    #       const jsdom = require('jsdom');
-    #       const { JSDOM } = jsdom;
-    #       const { select } = require('xpath');
-    #       const xml = fs.readFileSync('./target/site/jacoco/jacoco.xml', 'utf-8');
-    #       const dom = new JSDOM(xml, { contentType: 'text/xml' });
-    #       const doc = dom.window.document;
-    #       let covered = 0;
-    #       let missed = 0;
-    #       const sourceFileNodes = select(\"//sourcefile[@name='evClient.java']/counter[@type='LINE']\", doc);
-    #       sourceFileNodes.forEach(node => {
-    #         covered += parseInt(node.getAttribute('covered'));
-    #         missed += parseInt(node.getAttribute('missed'));
-    #       });
-    #       const coverage = (covered / (covered + missed)) * 100;
-    #       console.log('Coverage: ' + covered + '/' + (covered + missed) + ' ' + coverage.toFixed(2) + '%');
-    #     "
     
     - name: Calculate Coverage
       id: calculate-coverage
@@ -114,27 +92,27 @@ jobs:
           exit 1
         fi
 
-#     - name: Setup Python
-#       uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.x'
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
         
-#     - name: Install dependencies
-#       run: python -m pip install --upgrade pip lxml
+    - name: Install dependencies
+      run: python -m pip install --upgrade pip lxml
 
-#     - name: Extract and print coverage
-#       run: |
-#         python -c "
-#         import lxml.etree as ET
-#         tree = ET.parse('./target/site/clover/clover.xml')
-#         root = tree.getroot()
-#         path_to_client = 'evClient.java'
-#         covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
-#         missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
-#         total = covered + missed
-#         coverage = covered / total * 100
-#         print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
-#         "
+    - name: Extract and print coverage
+      run: |
+        python -c "
+        import lxml.etree as ET
+        tree = ET.parse('./target/site/clover/clover.xml')
+        root = tree.getroot()
+        path_to_client = 'evClient.java'
+        covered = sum(int(counter.get('covered')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
+        missed = sum(int(counter.get('missed')) for counter in root.iterfind('.//sourcefile[@name=\"'+ path_to_client +'\"]/counter[@type=\"LINE\"]'))
+        total = covered + missed
+        coverage = covered / total * 100
+        print(f'Lines covered for Client.java: {covered}/{total} ({coverage:.2f}%)')
+        "
 
 #     - name: Extract and print coverage for Client
 #       id: get_coverage
