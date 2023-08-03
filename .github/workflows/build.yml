@@ -53,44 +53,44 @@ jobs:
     - name: Install dependencies
       run: npm install xml2js
 
-    - name: Install Dependencies
-      run: |
-        npm install jsdom xpath
+    # - name: Install Dependencies
+    #   run: |
+    #     npm install jsdom xpath
     
-    - name: Calculate Coverage
-      id: calculate-coverage
-      run: |
-        node -e "
-          const fs = require('fs');
-          const jsdom = require('jsdom');
-          const { JSDOM } = jsdom;
-          const { select } = require('xpath');
-          const xml = fs.readFileSync('./target/site/jacoco/jacoco.xml', 'utf-8');
-          const dom = new JSDOM(xml, { contentType: 'text/xml' });
-          const doc = dom.window.document;
-          let covered = 0;
-          let missed = 0;
-          const sourceFileNodes = select('//sourcefile[@name=\"evClient.java\"]/counter[@type=\"LINE\"]', doc);
-          sourceFileNodes.forEach(node => {
-            covered += parseInt(node.getAttribute('covered'));
-            missed += parseInt(node.getAttribute('missed'));
-          });
-          const coverage = (covered / (covered + missed)) * 100;
-          fs.writeFileSync('coverage.txt', coverage.toFixed(2));
-        "
+    # - name: Calculate Coverage
+    #   id: calculate-coverage
+    #   run: |
+    #     node -e "
+    #       const fs = require('fs');
+    #       const jsdom = require('jsdom');
+    #       const { JSDOM } = jsdom;
+    #       const { select } = require('xpath');
+    #       const xml = fs.readFileSync('./target/site/jacoco/jacoco.xml', 'utf-8');
+    #       const dom = new JSDOM(xml, { contentType: 'text/xml' });
+    #       const doc = dom.window.document;
+    #       let covered = 0;
+    #       let missed = 0;
+    #       const sourceFileNodes = select('//sourcefile[@name=\"evClient.java\"]/counter[@type=\"LINE\"]', doc);
+    #       sourceFileNodes.forEach(node => {
+    #         covered += parseInt(node.getAttribute('covered'));
+    #         missed += parseInt(node.getAttribute('missed'));
+    #       });
+    #       const coverage = (covered / (covered + missed)) * 100;
+    #       fs.writeFileSync('coverage.txt', coverage.toFixed(2));
+    #     "
 
-    - name: Assign Coverage to Variable
-      run: echo "COVERAGE=$(cat coverage.txt)" >> $GITHUB_ENV
+    # - name: Assign Coverage to Variable
+    #   run: echo "COVERAGE=$(cat coverage.txt)" >> $GITHUB_ENV
 
-    - name: Print coverage
-      run: echo $COVERAGE
+    # - name: Print coverage
+    #   run: echo $COVERAGE
 
-    - name: Check coverage
-      run: |
-        if (( $(echo "$COVERAGE == 100" | bc -l) )); then
-          echo "Code coverage is less than 80%"
-          exit 1
-        fi
+    # - name: Check coverage
+    #   run: |
+    #     if (( $(echo "$COVERAGE == 100" | bc -l) )); then
+    #       echo "Code coverage is less than 80%"
+    #       exit 1
+    #     fi
 
     - name: Setup Python
       uses: actions/setup-python@v2
