@@ -77,7 +77,7 @@ jobs:
     #       const coverage = (covered / (covered + missed)) * 100;
     #       console.log('Coverage: ' + covered + '/' + (covered + missed) + ' ' + coverage.toFixed(2) + '%');
     #     "
-
+    
     - name: Calculate Coverage
       id: calculate-coverage
       run: |
@@ -102,6 +102,9 @@ jobs:
 
     - name: Assign Coverage to Variable
       run: echo "COVERAGE=$(cat coverage.txt)" >> $GITHUB_ENV
+
+    - name: Print coverage
+      run: echo $COVERAGE
 
 
 #     - name: Setup Python
