@@ -130,7 +130,7 @@ jobs:
             coverage = covered_statements / statements * 100
         else:
             coverage = 0
-        print(f'{coverage:.2f}')")
+        print(f'{coverage:.2f} {covered_statements} {statements}')")
         echo "coverage=$coverage" 
         echo "Lines covered for Client.java: $covered_statements / $statements ($coverage%)"
         echo "::set-output name=coverage::$coverage"
