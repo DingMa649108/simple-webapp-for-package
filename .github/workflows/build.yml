@@ -117,20 +117,25 @@ jobs:
     - name: Extract and print coverage for Client
       id: get_coverage
       run: |
-        coverage=$(python -c "
+        result=$(python -c "
         import lxml.etree as ET
         tree = ET.parse('./target/site/clover/clover.xml')
         root = tree.getroot()
         path_to_client = 'evClient.java'
         file_element = root.find('.//file[@name=\"'+ path_to_client +'\"]')
+        statements = 0
+        covered_statements = 0
         if file_element is not None:
             metrics = file_element.find('metrics')
             statements = int(metrics.get('statements'))
             covered_statements = int(metrics.get('coveredstatements'))
-            coverage = covered_statements / statements * 100
+            coverage = covered_statements / statements * 100 if statements else 0
         else:
             coverage = 0
         print(f'{coverage:.2f} {covered_statements} {statements}')")
+        coverage=$(echo $result | cut -d ' ' -f 1)
+        covered_statements=$(echo $result | cut -d ' ' -f 2)
+        statements=$(echo $result | cut -d ' ' -f 3)
         echo "coverage=$coverage" 
         echo "Lines covered for Client.java: $covered_statements / $statements ($coverage%)"
         echo "::set-output name=coverage::$coverage"
