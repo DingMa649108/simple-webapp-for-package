@@ -137,7 +137,7 @@ jobs:
 
     - name: Check coverage
       run: |
-        if (( $(echo "${{ steps.get_coverage.outputs.coverage }} == 100.0" | bc -l) )); then
+        if (( $(echo "${{ steps.get_coverage.outputs.coverage }} < 100.0" | bc -l) )); then
           echo "Error: Coverage is less than 80%";
           exit 1;
         fi
